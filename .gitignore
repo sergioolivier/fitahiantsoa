@@ -1,0 +1,30 @@
+# Dependances
+node_modules/
+.npm/
+
+# Environnement
+.env
+.env.local
+.env.*.local
+
+# Builds
+dist/
+build/
+
+# Uploads (fichiers utilisateurs, ne pas versionner)
+backend/uploads/*
+!backend/uploads/.gitkeep
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS / editeurs
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+
+# Vite
+.vite/

@@ -1,0 +1,261 @@
+/* ============================================================
+   Composants UI partages : boutons, badges, formulaires, cartes
+   ============================================================ */
+
+/* ---------- Boutons ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: 0.65rem 1.4rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  font-weight: 600;
+  font-size: var(--text-sm);
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
+  white-space: nowrap;
+}
+
+.btn:active {
+  transform: scale(0.98);
+}
+
+.btn--primary {
+  background: var(--color-terre);
+  color: var(--color-blanc);
+}
+.btn--primary:hover {
+  background: var(--color-terre-dark);
+}
+
+.btn--secondary {
+  background: var(--color-riziere);
+  color: var(--color-blanc);
+}
+.btn--secondary:hover {
+  background: var(--color-riziere-dark);
+}
+
+.btn--outline {
+  background: transparent;
+  border-color: var(--color-encre);
+  color: var(--color-encre);
+}
+.btn--outline:hover {
+  background: var(--color-encre);
+  color: var(--color-blanc);
+}
+
+.btn--ghost {
+  background: transparent;
+  color: var(--color-encre-soft);
+}
+.btn--ghost:hover {
+  background: var(--color-riz-deep);
+}
+
+.btn--danger {
+  background: var(--color-erreur);
+  color: var(--color-blanc);
+}
+.btn--danger:hover {
+  background: #8c2e24;
+}
+
+.btn--sm {
+  padding: 0.4rem 0.9rem;
+  font-size: var(--text-xs);
+}
+
+.btn--full {
+  width: 100%;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ---------- Badges de statut ---------- */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.7rem;
+  border-radius: 999px;
+  font-size: var(--text-xs);
+  font-weight: 600;
+  text-transform: capitalize;
+  white-space: nowrap;
+}
+
+.badge--en_attente, .badge--demande { background: #F3E6C8; color: #8A6A1F; }
+.badge--valide, .badge--en_vente, .badge--confirmee, .badge--acceptee, .badge--livree { background: #DCE8DC; color: var(--color-riziere-dark); }
+.badge--refuse, .badge--annulee, .badge--echouee, .badge--remboursee { background: #F3DAD5; color: var(--color-erreur); }
+.badge--en_preparation, .badge--prise_en_charge, .badge--ramassage { background: #E2DCF3; color: #5B4B9C; }
+.badge--en_transit { background: #D6E8F0; color: var(--color-info); }
+.badge--suspendu { background: #ECECEC; color: #6B6B6B; }
+
+/* ---------- Formulaires ---------- */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  margin-bottom: var(--space-4);
+}
+
+.form-label {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--color-encre-soft);
+}
+
+.form-input, .form-select, .form-textarea {
+  padding: 0.65rem 0.85rem;
+  border: 1px solid var(--color-ligne);
+  border-radius: var(--radius-sm);
+  background: var(--color-blanc);
+  font-size: var(--text-base);
+  color: var(--color-encre);
+  width: 100%;
+}
+
+.form-input:focus, .form-select:focus, .form-textarea:focus {
+  border-color: var(--color-terre);
+  outline: none;
+}
+
+.form-hint {
+  font-size: var(--text-xs);
+  color: var(--color-encre-soft);
+}
+
+.form-error {
+  font-size: var(--text-xs);
+  color: var(--color-erreur);
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-4);
+}
+
+@media (max-width: 640px) {
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---------- Cartes / panneaux ---------- */
+.panel {
+  background: var(--color-blanc);
+  border: 1px solid var(--color-ligne);
+  border-radius: var(--radius-md);
+  padding: var(--space-5);
+}
+
+.panel-title {
+  font-size: var(--text-lg);
+  margin-bottom: var(--space-4);
+}
+
+/* ---------- Tableaux ---------- */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--text-sm);
+}
+
+.data-table th {
+  text-align: left;
+  padding: var(--space-3) var(--space-3);
+  border-bottom: 2px solid var(--color-ligne);
+  color: var(--color-encre-soft);
+  font-weight: 600;
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.data-table td {
+  padding: var(--space-3);
+  border-bottom: 1px solid var(--color-ligne);
+  vertical-align: middle;
+}
+
+.data-table tr:hover td {
+  background: var(--color-riz-deep);
+}
+
+/* ---------- Etats vides et chargement ---------- */
+.empty-state {
+  text-align: center;
+  padding: var(--space-10) var(--space-4);
+  color: var(--color-encre-soft);
+}
+
+.empty-state__icon {
+  font-size: 2.5rem;
+  margin-bottom: var(--space-3);
+}
+
+.page-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  font-size: var(--text-lg);
+  color: var(--color-encre-soft);
+}
+
+.alert {
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-sm);
+  margin-bottom: var(--space-4);
+}
+
+.alert--error {
+  background: #F3DAD5;
+  color: var(--color-erreur);
+}
+
+.alert--success {
+  background: #DCE8DC;
+  color: var(--color-riziere-dark);
+}
+
+/* ---------- Grilles ---------- */
+.grid-products {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: var(--space-5);
+}
+
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--space-4);
+}
+
+.stat-card {
+  background: var(--color-blanc);
+  border: 1px solid var(--color-ligne);
+  border-radius: var(--radius-md);
+  padding: var(--space-5);
+}
+
+.stat-card__label {
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-encre-soft);
+  margin-bottom: var(--space-2);
+}
+
+.stat-card__value {
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  color: var(--color-terre-dark);
+}

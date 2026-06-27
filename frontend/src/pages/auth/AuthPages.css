@@ -1,0 +1,26 @@
+.auth-page {
+  display: flex;
+  justify-content: center;
+  padding: var(--space-10) var(--space-6) var(--space-12);
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 420px;
+}
+
+.auth-card--wide {
+  max-width: 640px;
+}
+
+.auth-card__footer {
+  text-align: center;
+  font-size: var(--text-sm);
+  color: var(--color-encre-soft);
+  margin-top: var(--space-4);
+}
+
+.auth-card__footer a {
+  color: var(--color-terre);
+  font-weight: 600;
+}

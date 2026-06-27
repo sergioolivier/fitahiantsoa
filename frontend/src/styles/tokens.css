@@ -1,0 +1,170 @@
+/* ============================================================
+   FITAHIANTSOA - Design tokens
+   Palette inspiree de la terre malgache (riziere, terre cuite,
+   tissage lamba) plutot que des defauts generiques IA.
+   ============================================================ */
+
+:root {
+  /* Couleurs primaires */
+  --color-terre: #C1502E;        /* terre cuite, accent chaud principal */
+  --color-terre-dark: #9C3E22;
+  --color-terre-light: #E2A088;
+  --color-riziere: #3D5A3D;      /* vert riziere, agriculture */
+  --color-riziere-dark: #283D28;
+  --color-riziere-light: #6B8C6B;
+  --color-ocre: #E8C77E;          /* sable / soleil */
+  --color-ocre-dark: #C9A352;
+
+  /* Neutres */
+  --color-riz: #FBF6EC;           /* fond principal, blanc casse "riz" */
+  --color-riz-deep: #F2EBDA;
+  --color-encre: #221F18;         /* texte principal, presque noir chaud */
+  --color-encre-soft: #4A4538;
+  --color-ligne: #E0D6BD;         /* bordures discretes */
+  --color-blanc: #FFFFFF;
+
+  /* Etats */
+  --color-succes: #3D5A3D;
+  --color-attention: #C9A352;
+  --color-erreur: #B33A2E;
+  --color-info: #4A6B7C;
+
+  /* Typographie */
+  --font-display: 'Fraunces', 'Georgia', serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: 'IBM Plex Mono', 'Consolas', monospace;
+
+  /* Echelle */
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.5rem;
+  --text-2xl: 2rem;
+  --text-3xl: 2.75rem;
+  --text-4xl: 3.75rem;
+
+  /* Espacement */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-8: 3rem;
+  --space-10: 4rem;
+  --space-12: 6rem;
+
+  /* Rayons et ombres */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --shadow-sm: 0 1px 2px rgba(34, 31, 24, 0.06);
+  --shadow-md: 0 4px 16px rgba(34, 31, 24, 0.08);
+  --shadow-lg: 0 12px 32px rgba(34, 31, 24, 0.12);
+
+  /* Layout */
+  --sidebar-width: 260px;
+  --header-height: 68px;
+  --max-width: 1280px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--color-riz);
+  color: var(--color-encre);
+  font-size: var(--text-base);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  line-height: 1.15;
+  margin: 0;
+  color: var(--color-encre);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+input, select, textarea {
+  font-family: inherit;
+  font-size: var(--text-base);
+}
+
+/* Respect des preferences de mouvement reduit */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* Focus clavier toujours visible (accessibilite) */
+a:focus-visible, button:focus-visible, input:focus-visible,
+select:focus-visible, textarea:focus-visible, [tabindex]:focus-visible {
+  outline: 2px solid var(--color-terre);
+  outline-offset: 2px;
+}
+
+/* Motif tisse "lamba" utilise comme separateur de section - element signature */
+.lamba-divider {
+  height: 10px;
+  width: 100%;
+  background-image:
+    repeating-linear-gradient(45deg, var(--color-terre) 0, var(--color-terre) 4px, transparent 4px, transparent 8px),
+    repeating-linear-gradient(-45deg, var(--color-riziere) 0, var(--color-riziere) 4px, transparent 4px, transparent 8px);
+  background-size: 16px 16px;
+  background-blend-mode: multiply;
+  opacity: 0.85;
+}
+
+.container {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 var(--space-6);
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 0 var(--space-4);
+  }
+}
+
+/* Scrollbar discrete */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-riz-deep);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-ligne);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-terre-light);
+}
