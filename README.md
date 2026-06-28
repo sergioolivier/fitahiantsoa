@@ -2,8 +2,6 @@
 
 Plateforme internationale de commerce electronique et de marketing numerique reliant fournisseurs, clients, employes, administrateurs et partenaires logistiques, avec une priorite sur l'agriculture et le tourisme malgaches.
 
-L'entreprise FITAHIANTSOA ne possede aucun stock physique : elle valide les produits soumis par les fournisseurs, fixe le prix de vente final, encaisse les paiements et orchestre la livraison via des partenaires logistiques externes.
-
 ## Stack technique
 
 | Couche      | Technologie                                  |
