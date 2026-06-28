@@ -1,5 +1,6 @@
 import { useEffect, useState, useCallback } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { productService } from '../services/product.service';
 import { categoryService } from '../services/category.service';
 import { useCart } from '../context/CartContext';
@@ -8,6 +9,7 @@ import ProductCard from '../components/common/ProductCard';
 import './Catalogue.css';
 
 export default function Catalogue() {
+  const { t } = useTranslation();
   const [searchParams, setSearchParams] = useSearchParams();
   const { user } = useAuth();
   const { addItem } = useCart();
@@ -64,52 +66,52 @@ export default function Catalogue() {
   return (
     <div className="container catalogue">
       <aside className="catalogue__filters panel">
-        <h3 className="panel-title">Filtres</h3>
+        <h3 className="panel-title">{t('catalogue.filters')}</h3>
 
         <div className="form-group">
-          <label className="form-label">Categorie</label>
+          <label className="form-label">{t('catalogue.category')}</label>
           <select className="form-select" value={category} onChange={(e) => updateParam('category', e.target.value)}>
-            <option value="">Toutes les categories</option>
+            <option value="">{t('catalogue.allCategories')}</option>
             {categories.map((c) => (
-              <option key={c.id} value={c.slug}>{c.nom}</option>
+              <option key={c.id} value={c.slug}>{t(`categories.${c.slug}`, c.nom)}</option>
             ))}
           </select>
         </div>
 
         <div className="form-group">
-          <label className="form-label">Prix minimum</label>
+          <label className="form-label">{t('catalogue.minPrice')}</label>
           <input type="number" className="form-input" value={prixMin} onChange={(e) => updateParam('prix_min', e.target.value)} placeholder="0" />
         </div>
 
         <div className="form-group">
-          <label className="form-label">Prix maximum</label>
-          <input type="number" className="form-input" value={prixMax} onChange={(e) => updateParam('prix_max', e.target.value)} placeholder="Sans limite" />
+          <label className="form-label">{t('catalogue.maxPrice')}</label>
+          <input type="number" className="form-input" value={prixMax} onChange={(e) => updateParam('prix_max', e.target.value)} placeholder={t('catalogue.noLimit')} />
         </div>
 
         <div className="form-group">
-          <label className="form-label">Trier par</label>
+          <label className="form-label">{t('catalogue.sortBy')}</label>
           <select className="form-select" value={tri} onChange={(e) => updateParam('tri', e.target.value)}>
-            <option value="">Plus recents</option>
-            <option value="prix_asc">Prix croissant</option>
-            <option value="prix_desc">Prix decroissant</option>
-            <option value="popularite">Popularite</option>
-            <option value="note">Meilleures notes</option>
+            <option value="">{t('catalogue.sortRecent')}</option>
+            <option value="prix_asc">{t('catalogue.sortPriceAsc')}</option>
+            <option value="prix_desc">{t('catalogue.sortPriceDesc')}</option>
+            <option value="popularite">{t('catalogue.sortPopularity')}</option>
+            <option value="note">{t('catalogue.sortRating')}</option>
           </select>
         </div>
       </aside>
 
       <div className="catalogue__results">
         <div className="catalogue__results-header">
-          <h1>{q ? `Resultats pour "${q}"` : 'Catalogue'}</h1>
-          <span>{pagination.total} produit{pagination.total > 1 ? 's' : ''}</span>
+          <h1>{q ? `${t('catalogue.resultsFor')} "${q}"` : t('catalogue.title')}</h1>
+          <span>{pagination.total} {pagination.total > 1 ? t('catalogue.products') : t('catalogue.product')}</span>
         </div>
 
         {loading ? (
-          <p>Chargement...</p>
+          <p>{t('common.loading')}</p>
         ) : products.length === 0 ? (
           <div className="empty-state">
             <div className="empty-state__icon">🔍</div>
-            <p>Aucun produit ne correspond a votre recherche.</p>
+            <p>{t('catalogue.noResults')}</p>
           </div>
         ) : (
           <>
@@ -122,11 +124,11 @@ export default function Catalogue() {
             {totalPages > 1 && (
               <div className="catalogue__pagination">
                 <button className="btn btn--outline btn--sm" disabled={page <= 1} onClick={() => updateParam('page', String(page - 1))}>
-                  ← Precedent
+                  ← {t('catalogue.previous')}
                 </button>
-                <span>Page {page} / {totalPages}</span>
+                <span>{t('catalogue.page')} {page} / {totalPages}</span>
                 <button className="btn btn--outline btn--sm" disabled={page >= totalPages} onClick={() => updateParam('page', String(page + 1))}>
-                  Suivant →
+                  {t('catalogue.next')} →
                 </button>
               </div>
             )}

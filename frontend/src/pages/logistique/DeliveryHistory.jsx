@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { deliveryService } from '../../services/delivery.service';
 import StatusBadge from '../../components/common/StatusBadge';
 
 export default function DeliveryHistory() {
+  const { t } = useTranslation();
   const [deliveries, setDeliveries] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -14,25 +16,25 @@ export default function DeliveryHistory() {
 
   return (
     <div>
-      <h1>Historique des livraisons</h1>
+      <h1>{t('pages.deliveryHistoryTitle')}</h1>
 
       <div className="stat-grid" style={{ margin: 'var(--space-5) 0 var(--space-8)' }}>
         <div className="stat-card">
-          <div className="stat-card__label">Livraisons terminees</div>
+          <div className="stat-card__label">{t('pages.completedDeliveries')}</div>
           <div className="stat-card__value">{deliveries.length}</div>
         </div>
         <div className="stat-card">
-          <div className="stat-card__label">Revenus estimes (5%)</div>
+          <div className="stat-card__label">{t('pages.estimatedRevenue')}</div>
           <div className="stat-card__value">{totalRevenu.toLocaleString('fr-FR')} MGA</div>
         </div>
       </div>
 
       <div className="panel">
-        {loading ? <p>Chargement...</p> : deliveries.length === 0 ? (
-          <div className="empty-state"><div className="empty-state__icon">🕓</div><p>Aucun historique pour le moment.</p></div>
+        {loading ? <p>{t('common.loading')}</p> : deliveries.length === 0 ? (
+          <div className="empty-state"><div className="empty-state__icon">🕓</div><p>{t('pages.noHistoryYet')}</p></div>
         ) : (
           <table className="data-table">
-            <thead><tr><th>Commande</th><th>Date de livraison</th><th>Statut</th><th>Montant</th></tr></thead>
+            <thead><tr><th>{t('pages.order')}</th><th>{t('pages.deliveryDate')}</th><th>{t('pages.status')}</th><th>{t('pages.amount')}</th></tr></thead>
             <tbody>
               {deliveries.map((d) => (
                 <tr key={d.id}>

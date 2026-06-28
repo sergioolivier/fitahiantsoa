@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { productService } from '../services/product.service';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import './ProductDetail.css';
 
 export default function ProductDetail() {
+  const { t } = useTranslation();
   const { id } = useParams();
   const { user } = useAuth();
   const { addItem } = useCart();
@@ -26,14 +28,15 @@ export default function ProductDetail() {
       return;
     }
     await addItem(id, quantite);
-    setMessage('Produit ajoute au panier.');
+    setMessage(t('product.addedToCart'));
     setTimeout(() => setMessage(null), 2500);
   }
 
-  if (loading) return <div className="page-loading">Chargement du produit...</div>;
-  if (!product) return <div className="empty-state container"><p>Produit introuvable.</p></div>;
+  if (loading) return <div className="page-loading">{t('product.loadingProduct')}</div>;
+  if (!product) return <div className="empty-state container"><p>{t('product.notFound')}</p></div>;
 
   const media = product.media?.length ? product.media : [{ url: null }];
+  const categoryLabel = product.categorie_slug ? t(`categories.${product.categorie_slug}`, product.categorie_nom) : product.categorie_nom;
 
   return (
     <div className="container product-detail">
@@ -57,11 +60,11 @@ export default function ProductDetail() {
       </div>
 
       <div className="product-detail__info">
-        {product.categorie_nom && <Link to={`/catalogue?category=${product.categorie_slug}`} className="product-detail__category">{product.categorie_nom}</Link>}
+        {categoryLabel && <Link to={`/catalogue?category=${product.categorie_slug}`} className="product-detail__category">{categoryLabel}</Link>}
         <h1>{product.nom}</h1>
 
         {product.nombre_avis > 0 && (
-          <div className="product-detail__rating">★ {Number(product.note_moyenne).toFixed(1)} ({product.nombre_avis} avis)</div>
+          <div className="product-detail__rating">★ {Number(product.note_moyenne).toFixed(1)} ({product.nombre_avis} {t('product.reviews')})</div>
         )}
 
         <p className="product-detail__price">{Number(product.prix_vente).toLocaleString('fr-FR')} {product.devise}</p>
@@ -70,7 +73,7 @@ export default function ProductDetail() {
 
         {product.caracteristiques_techniques && Object.keys(product.caracteristiques_techniques).length > 0 && (
           <div className="product-detail__specs">
-            <h3>Caracteristiques techniques</h3>
+            <h3>{t('product.technicalSpecs')}</h3>
             <table>
               <tbody>
                 {Object.entries(product.caracteristiques_techniques).map(([key, value]) => (
@@ -82,14 +85,14 @@ export default function ProductDetail() {
         )}
 
         <div className="product-detail__supplier">
-          Vendu par <strong>{product.fournisseur_nom} {product.fournisseur_prenom}</strong>
+          {t('product.soldBy')} <strong>{product.fournisseur_nom} {product.fournisseur_prenom}</strong>
           {product.fournisseur_ville && ` · ${product.fournisseur_ville}`}
         </div>
 
         {message && <div className="alert alert--success">{message}</div>}
 
         <div className="product-detail__buy-box">
-          <label htmlFor="quantite">Quantite</label>
+          <label htmlFor="quantite">{t('product.quantity')}</label>
           <input
             id="quantite"
             type="number"
@@ -98,20 +101,20 @@ export default function ProductDetail() {
             value={quantite}
             onChange={(e) => setQuantite(Math.max(1, parseInt(e.target.value, 10) || 1))}
           />
-          <button className="btn btn--primary" onClick={handleAddToCart}>Ajouter au panier</button>
+          <button className="btn btn--primary" onClick={handleAddToCart}>{t('product.addToCart')}</button>
         </div>
 
         {product.code_barre && (
           <div className="product-detail__codes">
-            <span>Code-barres : {product.code_barre}</span>
-            {product.qr_code_data && <img src={product.qr_code_data} alt="QR Code produit" width="90" height="90" />}
+            <span>{t('product.barcode')} : {product.code_barre}</span>
+            {product.qr_code_data && <img src={product.qr_code_data} alt="QR Code" width="90" height="90" />}
           </div>
         )}
       </div>
 
       {product.avis?.length > 0 && (
         <div className="product-detail__reviews">
-          <h2>Avis clients</h2>
+          <h2>{t('product.customerReviews')}</h2>
           {product.avis.map((review) => (
             <div className="review-item" key={review.id}>
               <div className="review-item__header">

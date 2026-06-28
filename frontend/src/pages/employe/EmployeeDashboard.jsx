@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { productService } from '../../services/product.service';
 import { orderService } from '../../services/order.service';
 import { useAuth } from '../../context/AuthContext';
 import StatusBadge from '../../components/common/StatusBadge';
 
 export default function EmployeeDashboard() {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const [pendingProducts, setPendingProducts] = useState([]);
   const [recentOrders, setRecentOrders] = useState([]);
@@ -22,32 +24,32 @@ export default function EmployeeDashboard() {
 
   return (
     <div>
-      <h1>Bonjour {user.prenom} 👋</h1>
+      <h1>{t('pages.hello')} {user.prenom} 👋</h1>
       <p style={{ color: 'var(--color-encre-soft)', marginBottom: 'var(--space-6)' }}>
-        Voici les taches qui necessitent votre attention.
+        {t('pages.tasksAttention')}
       </p>
 
       <div className="stat-grid" style={{ marginBottom: 'var(--space-8)' }}>
         <div className="stat-card">
-          <div className="stat-card__label">Produits en attente</div>
+          <div className="stat-card__label">{t('pages.pendingProductsLabel')}</div>
           <div className="stat-card__value">{pendingProducts.length}</div>
         </div>
         <div className="stat-card">
-          <div className="stat-card__label">Commandes recentes</div>
+          <div className="stat-card__label">{t('pages.recentOrdersLabel')}</div>
           <div className="stat-card__value">{recentOrders.length}</div>
         </div>
       </div>
 
       <div className="panel" style={{ marginBottom: 'var(--space-6)' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
-          <h2 className="panel-title">Produits a valider</h2>
-          <Link to="/employe/validation-produits" className="btn btn--outline btn--sm">Voir tout</Link>
+          <h2 className="panel-title">{t('pages.productsToValidate')}</h2>
+          <Link to="/employe/validation-produits" className="btn btn--outline btn--sm">{t('pages.viewAll')}</Link>
         </div>
-        {loading ? <p>Chargement...</p> : pendingProducts.length === 0 ? (
-          <div className="empty-state"><div className="empty-state__icon">✅</div><p>Aucun produit en attente.</p></div>
+        {loading ? <p>{t('common.loading')}</p> : pendingProducts.length === 0 ? (
+          <div className="empty-state"><div className="empty-state__icon">✅</div><p>{t('pages.noPendingProducts')}</p></div>
         ) : (
           <table className="data-table">
-            <thead><tr><th>Produit</th><th>Fournisseur</th><th>Prix propose</th></tr></thead>
+            <thead><tr><th>{t('pages.product')}</th><th>{t('pages.supplier')}</th><th>{t('pages.proposedPrice')}</th></tr></thead>
             <tbody>
               {pendingProducts.slice(0, 5).map((p) => (
                 <tr key={p.id}>
@@ -62,12 +64,12 @@ export default function EmployeeDashboard() {
       </div>
 
       <div className="panel">
-        <h2 className="panel-title">Commandes recentes</h2>
+        <h2 className="panel-title">{t('pages.recentOrdersLabel')}</h2>
         {recentOrders.length === 0 ? (
-          <div className="empty-state"><div className="empty-state__icon">📦</div><p>Aucune commande recente.</p></div>
+          <div className="empty-state"><div className="empty-state__icon">📦</div><p>{t('pages.noRecentOrders')}</p></div>
         ) : (
           <table className="data-table">
-            <thead><tr><th>Numero</th><th>Client</th><th>Montant</th><th>Statut</th></tr></thead>
+            <thead><tr><th>{t('pages.orderNumber')}</th><th>{t('pages.client')}</th><th>{t('pages.amount')}</th><th>{t('pages.status')}</th></tr></thead>
             <tbody>
               {recentOrders.map((o) => (
                 <tr key={o.id}>

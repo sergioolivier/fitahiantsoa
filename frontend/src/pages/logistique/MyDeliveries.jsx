@@ -1,11 +1,17 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { deliveryService } from '../../services/delivery.service';
 import StatusBadge from '../../components/common/StatusBadge';
 
 const NEXT_STATUS = { acceptee: 'ramassage', ramassage: 'en_transit', en_transit: 'livree' };
-const NEXT_LABEL = { acceptee: 'Marquer comme ramasse', ramassage: 'Marquer en transit', en_transit: 'Confirmer la livraison' };
 
 export default function MyDeliveries() {
+  const { t } = useTranslation();
+  const NEXT_LABEL = {
+    acceptee: t('pages.markAsPickedUp'),
+    ramassage: t('pages.markAsInTransit'),
+    en_transit: t('pages.confirmDelivery'),
+  };
   const [deliveries, setDeliveries] = useState([]);
   const [loading, setLoading] = useState(true);
   const [codeInputs, setCodeInputs] = useState({});
@@ -28,14 +34,14 @@ export default function MyDeliveries() {
     if (nextStatus === 'livree') {
       const code = codeInputs[delivery.id];
       if (!code) {
-        setError('Demandez le code de confirmation au client avant de valider la livraison.');
+        setError(t('pages.confirmationCodeHint'));
         return;
       }
       try {
         await deliveryService.updateStatus(delivery.id, 'livree', code);
         refresh();
       } catch (err) {
-        setError(err.response?.data?.message || 'Code de confirmation invalide.');
+        setError(err.response?.data?.message || t('pages.invalidCode'));
       }
       return;
     }
@@ -45,21 +51,21 @@ export default function MyDeliveries() {
   }
 
   async function handleRefuse(id) {
-    if (!window.confirm('Refuser cette mission ? Elle redeviendra disponible pour d\'autres partenaires.')) return;
+    if (!window.confirm(t('pages.confirmRefuseMission'))) return;
     await deliveryService.refuse(id);
     refresh();
   }
 
   return (
     <div>
-      <h1>Mes livraisons en cours</h1>
+      <h1>{t('pages.myOngoingDeliveriesTitle')}</h1>
       {error && <div className="alert alert--error" style={{ marginTop: 'var(--space-3)' }}>{error}</div>}
 
       <div style={{ marginTop: 'var(--space-5)', display: 'flex', flexDirection: 'column', gap: 'var(--space-4)' }}>
         {loading ? (
-          <p>Chargement...</p>
+          <p>{t('common.loading')}</p>
         ) : deliveries.length === 0 ? (
-          <div className="empty-state panel"><div className="empty-state__icon">🚚</div><p>Aucune livraison en cours.</p></div>
+          <div className="empty-state panel"><div className="empty-state__icon">🚚</div><p>{t('pages.noOngoingDeliveries')}</p></div>
         ) : (
           deliveries.map((d) => (
             <div className="panel" key={d.id}>
@@ -67,15 +73,15 @@ export default function MyDeliveries() {
                 <div>
                   <strong>{d.numero_commande}</strong> <StatusBadge status={d.statut} />
                   <p style={{ fontSize: 'var(--text-sm)', margin: '4px 0' }}>{d.adresse_livraison}{d.ville_livraison ? `, ${d.ville_livraison}` : ''}</p>
-                  <p style={{ fontSize: 'var(--text-sm)', color: 'var(--color-encre-soft)' }}>Tel : {d.telephone_contact} · {Number(d.montant_total).toLocaleString('fr-FR')} MGA</p>
+                  <p style={{ fontSize: 'var(--text-sm)', color: 'var(--color-encre-soft)' }}>{t('pages.phoneLabel')} : {d.telephone_contact} · {Number(d.montant_total).toLocaleString('fr-FR')} MGA</p>
                 </div>
-                <button className="btn btn--ghost btn--sm" onClick={() => handleRefuse(d.id)}>Refuser la mission</button>
+                <button className="btn btn--ghost btn--sm" onClick={() => handleRefuse(d.id)}>{t('pages.refuseMission')}</button>
               </div>
 
               {d.statut === 'en_transit' && (
                 <div style={{ display: 'flex', gap: 'var(--space-3)', marginTop: 'var(--space-3)', alignItems: 'flex-end' }}>
                   <div className="form-group" style={{ marginBottom: 0 }}>
-                    <label className="form-label">Code de confirmation du client</label>
+                    <label className="form-label">{t('pages.clientConfirmationCode')}</label>
                     <input className="form-input" style={{ width: 140 }} value={codeInputs[d.id] || ''} onChange={(e) => setCodeInputs((c) => ({ ...c, [d.id]: e.target.value.toUpperCase() }))} />
                   </div>
                 </div>

@@ -33,6 +33,10 @@ DO $$ BEGIN
   CREATE TYPE payment_method AS ENUM ('mobile_money', 'carte_bancaire', 'virement', 'especes_livraison', 'paypal');
 EXCEPTION WHEN duplicate_object THEN NULL; END $$;
 
+DO $$ BEGIN
+  CREATE TYPE staff_type AS ENUM ('interne', 'externe');
+EXCEPTION WHEN duplicate_object THEN NULL; END $$;
+
 -- ============================================================
 -- UTILISATEURS (table commune a tous les roles)
 -- ============================================================
@@ -53,6 +57,8 @@ CREATE TABLE IF NOT EXISTS users (
   avatar_url TEXT,
   est_actif BOOLEAN DEFAULT true,
   est_verifie BOOLEAN DEFAULT false,
+  type_personnel staff_type,        -- 'interne' (salarie fixe FITAHIANTSOA) ou 'externe' (mission courte duree). Applicable uniquement au role 'employe'.
+  date_fin_mission DATE,            -- date de fin prevue pour le personnel externe en mission, optionnel
   derniere_connexion TIMESTAMPTZ,
   created_at TIMESTAMPTZ DEFAULT now(),
   updated_at TIMESTAMPTZ DEFAULT now()
@@ -68,7 +74,7 @@ CREATE TABLE IF NOT EXISTS supplier_profiles (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
   nom_entreprise VARCHAR(255),
-  secteur_activite VARCHAR(100),     -- agriculture, tourisme, sante, materiel_medical, autre
+  secteur_activite VARCHAR(100),     -- equipements_ruraux, irrigation, outillage, materiel_medical, autre
   description TEXT,
   numero_fiscal VARCHAR(50),
   solde_disponible NUMERIC(14,2) DEFAULT 0,    -- revenus dus au fournisseur apres commission

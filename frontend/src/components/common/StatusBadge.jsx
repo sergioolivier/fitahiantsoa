@@ -1,10 +1,6 @@
-const LABELS = {
-  en_attente: 'En attente', valide: 'Valide', refuse: 'Refuse', en_vente: 'En vente', suspendu: 'Suspendu',
-  confirmee: 'Confirmee', en_preparation: 'En preparation', prise_en_charge: 'Prise en charge',
-  en_transit: 'En transit', livree: 'Livree', annulee: 'Annulee', remboursee: 'Remboursee',
-  demande: 'Demande', acceptee: 'Acceptee', refusee: 'Refusee', ramassage: 'Ramassage', echouee: 'Echouee',
-};
+import { useTranslation } from 'react-i18next';
 
 export default function StatusBadge({ status }) {
-  return <span className={`badge badge--${status}`}>{LABELS[status] || status}</span>;
+  const { t } = useTranslation();
+  return <span className={`badge badge--${status}`}>{t(`status.${status}`, status)}</span>;
 }

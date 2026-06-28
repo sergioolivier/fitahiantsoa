@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { notificationService } from '../../services/notification.service';
 
 export default function NotificationsPage() {
+  const { t } = useTranslation();
   const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -27,17 +29,17 @@ export default function NotificationsPage() {
   return (
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
-        <h1>Notifications</h1>
-        <button className="btn btn--outline btn--sm" onClick={handleMarkAllRead}>Tout marquer comme lu</button>
+        <h1>{t('common.notifications')}</h1>
+        <button className="btn btn--outline btn--sm" onClick={handleMarkAllRead}>{t('pages.markAllRead')}</button>
       </div>
 
       <div className="panel" style={{ marginTop: 'var(--space-5)' }}>
         {loading ? (
-          <p>Chargement...</p>
+          <p>{t('common.loading')}</p>
         ) : notifications.length === 0 ? (
           <div className="empty-state">
             <div className="empty-state__icon">🔔</div>
-            <p>Aucune notification pour le moment.</p>
+            <p>{t('pages.noNotifications')}</p>
           </div>
         ) : (
           notifications.map((n) => (

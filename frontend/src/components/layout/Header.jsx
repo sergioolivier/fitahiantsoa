@@ -1,7 +1,9 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../context/AuthContext';
 import { useCart } from '../../context/CartContext';
+import LanguageSwitcher from '../common/LanguageSwitcher';
 import './Header.css';
 
 const DASHBOARD_PATH = {
@@ -13,6 +15,7 @@ const DASHBOARD_PATH = {
 };
 
 export default function Header() {
+  const { t } = useTranslation();
   const { user, logout } = useAuth();
   const { cart } = useCart();
   const navigate = useNavigate();
@@ -30,18 +33,18 @@ export default function Header() {
       <div className="container site-header__inner">
         <Link to="/" className="site-header__logo">
           <span className="site-header__logo-mark">F</span>
-          FITAHIANTSOA
+          {t('common.appName')}
         </Link>
 
         <form className="site-header__search" onSubmit={handleSearch}>
           <input
             type="search"
-            placeholder="Rechercher un produit, une categorie..."
+            placeholder={t('common.search')}
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            aria-label="Rechercher"
+            aria-label={t('common.search')}
           />
-          <button type="submit" aria-label="Lancer la recherche">🔍</button>
+          <button type="submit" aria-label={t('common.search')}>🔍</button>
         </form>
 
         <button className="site-header__burger" onClick={() => setMenuOpen((o) => !o)} aria-label="Menu">
@@ -49,13 +52,15 @@ export default function Header() {
         </button>
 
         <nav className={`site-header__nav ${menuOpen ? 'is-open' : ''}`}>
-          <Link to="/catalogue" onClick={() => setMenuOpen(false)}>Catalogue</Link>
-          <Link to="/promotions" onClick={() => setMenuOpen(false)}>Promotions</Link>
+          <Link to="/catalogue" onClick={() => setMenuOpen(false)}>{t('common.catalogue')}</Link>
+          <Link to="/promotions" onClick={() => setMenuOpen(false)}>{t('common.promotions')}</Link>
+          <span className="site-header__nav-sep" aria-hidden="true" />
+          <LanguageSwitcher compact />
 
           {!user && (
             <>
-              <Link to="/connexion" className="btn btn--outline btn--sm" onClick={() => setMenuOpen(false)}>Connexion</Link>
-              <Link to="/inscription" className="btn btn--primary btn--sm" onClick={() => setMenuOpen(false)}>Inscription</Link>
+              <Link to="/connexion" className="btn btn--outline btn--sm" onClick={() => setMenuOpen(false)}>{t('common.login')}</Link>
+              <Link to="/inscription" className="btn btn--primary btn--sm" onClick={() => setMenuOpen(false)}>{t('common.register')}</Link>
             </>
           )}
 
@@ -69,7 +74,7 @@ export default function Header() {
               <Link to={DASHBOARD_PATH[user.role] || '/'} className="btn btn--outline btn--sm" onClick={() => setMenuOpen(false)}>
                 {user.prenom}
               </Link>
-              <button className="btn btn--ghost btn--sm" onClick={logout}>Deconnexion</button>
+              <button className="btn btn--ghost btn--sm" onClick={logout}>{t('common.logout')}</button>
             </>
           )}
         </nav>

@@ -1,7 +1,9 @@
 import { Link, useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useCart } from '../../context/CartContext';
 
 export default function Cart() {
+  const { t } = useTranslation();
   const { cart, updateItem, removeItem } = useCart();
   const navigate = useNavigate();
 
@@ -9,19 +11,19 @@ export default function Cart() {
     return (
       <div className="empty-state">
         <div className="empty-state__icon">🛒</div>
-        <p>Votre panier est vide.</p>
-        <Link to="/catalogue" className="btn btn--primary" style={{ marginTop: 'var(--space-3)' }}>Parcourir le catalogue</Link>
+        <p>{t('cart.empty')}</p>
+        <Link to="/catalogue" className="btn btn--primary" style={{ marginTop: 'var(--space-3)' }}>{t('cart.browseCatalogue')}</Link>
       </div>
     );
   }
 
   return (
     <div>
-      <h1>Mon panier</h1>
+      <h1>{t('cart.title')}</h1>
       <div className="panel" style={{ marginTop: 'var(--space-5)' }}>
         <table className="data-table">
           <thead>
-            <tr><th>Produit</th><th>Prix unitaire</th><th>Quantite</th><th>Sous-total</th><th></th></tr>
+            <tr><th>{t('cart.product')}</th><th>{t('cart.unitPrice')}</th><th>{t('cart.quantity')}</th><th>{t('cart.subtotal')}</th><th></th></tr>
           </thead>
           <tbody>
             {cart.items.map((item) => (
@@ -44,15 +46,15 @@ export default function Cart() {
                   />
                 </td>
                 <td>{(Number(item.prix_vente) * item.quantite).toLocaleString('fr-FR')} {item.devise}</td>
-                <td><button className="btn btn--ghost btn--sm" onClick={() => removeItem(item.id)}>Retirer</button></td>
+                <td><button className="btn btn--ghost btn--sm" onClick={() => removeItem(item.id)}>{t('cart.remove')}</button></td>
               </tr>
             ))}
           </tbody>
         </table>
 
         <div style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: 'var(--space-5)', marginTop: 'var(--space-5)' }}>
-          <strong style={{ fontSize: 'var(--text-xl)' }}>Total : {cart.total.toLocaleString('fr-FR')} MGA</strong>
-          <button className="btn btn--primary" onClick={() => navigate('/client/commander')}>Passer la commande</button>
+          <strong style={{ fontSize: 'var(--text-xl)' }}>{t('cart.total')} : {cart.total.toLocaleString('fr-FR')} MGA</strong>
+          <button className="btn btn--primary" onClick={() => navigate('/client/commander')}>{t('cart.checkout')}</button>
         </div>
       </div>
     </div>

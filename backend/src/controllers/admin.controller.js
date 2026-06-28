@@ -17,7 +17,8 @@ async function listUsers(req, res, next) {
     }
     const where = conditions.length ? `WHERE ${conditions.join(' AND ')}` : '';
     const result = await query(
-      `SELECT id, role, email, nom, prenom, telephone, cin, pays, ville, est_actif, est_verifie, derniere_connexion, created_at
+      `SELECT id, role, email, nom, prenom, telephone, cin, pays, ville, est_actif, est_verifie,
+              type_personnel, date_fin_mission, derniere_connexion, created_at
        FROM users ${where} ORDER BY created_at DESC`,
       params
     );
@@ -33,7 +34,7 @@ async function listUsers(req, res, next) {
  */
 async function createInternalUser(req, res, next) {
   try {
-    const { email, password, nom, prenom, telephone, cin, role } = req.body;
+    const { email, password, nom, prenom, telephone, cin, role, type_personnel, date_fin_mission } = req.body;
 
     if (!['employe', 'admin'].includes(role)) {
       throw new AppError('Cette route ne permet de creer que des comptes employe ou admin.', 400);
@@ -41,18 +42,25 @@ async function createInternalUser(req, res, next) {
     if (!email || !password || !nom || !prenom || !cin) {
       throw new AppError('Tous les champs sont obligatoires (email, password, nom, prenom, cin).', 400);
     }
+    if (role === 'employe' && type_personnel && !['interne', 'externe'].includes(type_personnel)) {
+      throw new AppError('Le type de personnel doit etre "interne" ou "externe".', 400);
+    }
 
     const existing = await query('SELECT id FROM users WHERE email = $1', [email.toLowerCase()]);
     if (existing.rowCount > 0) {
       throw new AppError('Un compte existe deja avec cet email.', 409);
     }
 
+    // Le type de personnel ne s'applique qu'aux comptes employe ; un admin reste toujours interne par defaut.
+    const typePersonnelFinal = role === 'employe' ? (type_personnel || 'interne') : null;
+    const dateFinFinal = typePersonnelFinal === 'externe' ? (date_fin_mission || null) : null;
+
     const passwordHash = await bcrypt.hash(password, 12);
     const result = await query(
-      `INSERT INTO users (role, email, password_hash, nom, prenom, telephone, cin, est_actif, est_verifie)
-       VALUES ($1, $2, $3, $4, $5, $6, $7, true, true)
-       RETURNING id, role, email, nom, prenom, created_at`,
-      [role, email.toLowerCase(), passwordHash, nom, prenom, telephone || null, cin]
+      `INSERT INTO users (role, email, password_hash, nom, prenom, telephone, cin, est_actif, est_verifie, type_personnel, date_fin_mission)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, true, true, $8, $9)
+       RETURNING id, role, email, nom, prenom, type_personnel, date_fin_mission, created_at`,
+      [role, email.toLowerCase(), passwordHash, nom, prenom, telephone || null, cin, typePersonnelFinal, dateFinFinal]
     );
 
     res.status(201).json({ success: true, message: `Compte ${role} cree avec succes.`, data: result.rows[0] });
@@ -105,6 +113,38 @@ async function changeUserRole(req, res, next) {
 }
 
 /**
+ * PATCH /api/admin/users/:id/staff-type
+ * [ADMIN] Definit le type de personnel (interne/externe) d'un compte employe.
+ */
+async function changeStaffType(req, res, next) {
+  try {
+    const { type_personnel, date_fin_mission } = req.body;
+    if (!['interne', 'externe'].includes(type_personnel)) {
+      throw new AppError('Le type de personnel doit etre "interne" ou "externe".', 400);
+    }
+
+    const target = await query('SELECT role FROM users WHERE id = $1', [req.params.id]);
+    if (target.rowCount === 0) {
+      throw new AppError('Utilisateur introuvable.', 404);
+    }
+    if (target.rows[0].role !== 'employe') {
+      throw new AppError('Le type de personnel ne s\'applique qu\'aux comptes employe.', 400);
+    }
+
+    const dateFinFinal = type_personnel === 'externe' ? (date_fin_mission || null) : null;
+
+    const result = await query(
+      `UPDATE users SET type_personnel = $1, date_fin_mission = $2 WHERE id = $3
+       RETURNING id, email, role, type_personnel, date_fin_mission`,
+      [type_personnel, dateFinFinal, req.params.id]
+    );
+    res.json({ success: true, message: 'Type de personnel mis a jour.', data: result.rows[0] });
+  } catch (err) {
+    next(err);
+  }
+}
+
+/**
  * GET /api/admin/dashboard
  * [ADMIN] Statistiques globales de la plateforme.
  */
@@ -112,7 +152,7 @@ async function getDashboardStats(req, res, next) {
   try {
     const [
       totalUsers, usersByRole, totalProducts, productsByStatus,
-      totalOrders, ordersByStatus, revenue, topProducts, topSuppliers, pendingProducts,
+      totalOrders, ordersByStatus, revenue, topProducts, topSuppliers, pendingProducts, staffByType,
     ] = await Promise.all([
       query('SELECT COUNT(*) FROM users'),
       query('SELECT role, COUNT(*) FROM users GROUP BY role'),
@@ -126,6 +166,7 @@ async function getDashboardStats(req, res, next) {
              FROM users u JOIN supplier_profiles sp ON sp.user_id = u.id
              ORDER BY sp.solde_disponible DESC LIMIT 5`),
       query(`SELECT COUNT(*) FROM products WHERE statut = 'en_attente'`),
+      query(`SELECT type_personnel, COUNT(*) FROM users WHERE role = 'employe' GROUP BY type_personnel`),
     ]);
 
     res.json({
@@ -149,6 +190,9 @@ async function getDashboardStats(req, res, next) {
           chiffre_affaires_total: parseFloat(revenue.rows[0].total),
         },
         top_fournisseurs: topSuppliers.rows,
+        personnel: {
+          par_type: staffByType.rows,
+        },
       },
     });
   } catch (err) {
@@ -156,4 +200,4 @@ async function getDashboardStats(req, res, next) {
   }
 }
 
-module.exports = { listUsers, createInternalUser, toggleUserActive, changeUserRole, getDashboardStats };
+module.exports = { listUsers, createInternalUser, toggleUserActive, changeUserRole, changeStaffType, getDashboardStats };

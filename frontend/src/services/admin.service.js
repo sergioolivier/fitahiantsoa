@@ -17,6 +17,10 @@ export const adminService = {
     const { data } = await api.patch(`/admin/users/${id}/role`, { role });
     return data.data;
   },
+  async changeStaffType(id, type_personnel, date_fin_mission) {
+    const { data } = await api.patch(`/admin/users/${id}/staff-type`, { type_personnel, date_fin_mission });
+    return data.data;
+  },
   async getDashboard() {
     const { data } = await api.get('/admin/dashboard');
     return data.data;

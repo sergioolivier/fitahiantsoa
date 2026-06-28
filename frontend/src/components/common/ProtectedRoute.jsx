@@ -1,4 +1,5 @@
 import { Navigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../context/AuthContext';
 
 /**
@@ -8,10 +9,11 @@ import { useAuth } from '../../context/AuthContext';
  * Usage : <ProtectedRoute roles={['admin']}><AdminDashboard /></ProtectedRoute>
  */
 export default function ProtectedRoute({ children, roles }) {
+  const { t } = useTranslation();
   const { user, loading } = useAuth();
 
   if (loading) {
-    return <div className="page-loading">Chargement...</div>;
+    return <div className="page-loading">{t('common.loading')}</div>;
   }
 
   if (!user) {
