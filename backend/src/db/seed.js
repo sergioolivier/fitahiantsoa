@@ -147,6 +147,96 @@ const DEMO_PRODUCTS_TOURISME = [
     categorie_slug: 'tourisme',
     prix_propose: 68000, prix_vente: 79000, stock: 60, unite: 'unite',
   },
+  {
+    nom: 'Moto tout-terrain 200cc pour guides',
+    description: "Moto trail 200cc, suspensions renforcees, pneus mixtes route-piste, ideale pour le guidage de groupes sur circuits ruraux et forestiers.",
+    categorie_slug: 'tourisme',
+    prix_propose: 9800000, prix_vente: 11200000, stock: 6, unite: 'unite',
+  },
+  {
+    nom: 'Velo VTT location tout-terrain',
+    description: "VTT semi-rigide 21 vitesses, cadre aluminium, freins a disque, adapte a la location pour circuits cyclotouristiques.",
+    categorie_slug: 'tourisme',
+    prix_propose: 650000, prix_vente: 740000, stock: 20, unite: 'unite',
+  },
+  {
+    nom: 'Masque et tuba de plongee snorkeling',
+    description: "Kit masque panoramique et tuba sec anti-eclaboussures, pour decouverte des fonds coralliens, taille adulte ajustable.",
+    categorie_slug: 'tourisme',
+    prix_propose: 45000, prix_vente: 55000, stock: 80, unite: 'unite',
+  },
+  {
+    nom: 'Paddle gonflable stand-up 10 pieds',
+    description: "Planche de paddle gonflable avec pompe haute pression, pagaie ajustable et sac de transport, pour lagons et plans d'eau calmes.",
+    categorie_slug: 'tourisme',
+    prix_propose: 980000, prix_vente: 1120000, stock: 14, unite: 'unite',
+  },
+  {
+    nom: 'Hamac de randonnee avec moustiquaire',
+    description: "Hamac suspendu deux places avec moustiquaire integree et auvent impermeable, pour bivouac en foret tropicale.",
+    categorie_slug: 'tourisme',
+    prix_propose: 125000, prix_vente: 145000, stock: 30, unite: 'unite',
+  },
+  {
+    nom: 'Matelas de sol autogonflant compact',
+    description: "Matelas autogonflant compact, isolant thermique, pour le confort en bivouac et trek de plusieurs jours.",
+    categorie_slug: 'tourisme',
+    prix_propose: 95000, prix_vente: 112000, stock: 40, unite: 'unite',
+  },
+  {
+    nom: 'Rechaud de camping a gaz portatif',
+    description: "Rechaud pliable monobruleur, allumage piezo, compatible cartouches de gaz standard, pour cuisine en plein air.",
+    categorie_slug: 'tourisme',
+    prix_propose: 78000, prix_vente: 92000, stock: 35, unite: 'unite',
+  },
+  {
+    nom: 'Glaciere rigide 50L pour excursions',
+    description: "Glaciere rigide 50 litres, isolation haute performance, poignees renforcees, ideale pour les excursions de plusieurs jours.",
+    categorie_slug: 'tourisme',
+    prix_propose: 210000, prix_vente: 245000, stock: 18, unite: 'unite',
+  },
+  {
+    nom: 'Lampe frontale rechargeable haute puissance',
+    description: "Lampe frontale LED rechargeable USB, 400 lumens, mode rouge nocturne, pour treks et observation nocturne de la faune.",
+    categorie_slug: 'tourisme',
+    prix_propose: 58000, prix_vente: 68000, stock: 50, unite: 'unite',
+  },
+  {
+    nom: 'Trousse de premiers secours randonnee',
+    description: "Trousse de secours complete et compacte, pansements, antiseptiques et materiel de bandage, conforme aux sorties en milieu isole.",
+    categorie_slug: 'tourisme',
+    prix_propose: 65000, prix_vente: 76000, stock: 45, unite: 'unite',
+  },
+  {
+    nom: 'GPS de randonnee outdoor etanche',
+    description: "GPS portable etanche pour le trek et l'ecotourisme, cartographie hors-ligne, autonomie longue duree, boussole electronique integree.",
+    categorie_slug: 'tourisme',
+    prix_propose: 480000, prix_vente: 555000, stock: 16, unite: 'unite',
+  },
+  {
+    nom: 'Bottes de randonnee imperméables tige haute',
+    description: "Chaussures de randonnee tige haute, membrane impermeable respirante, semelle crampons adherence terrain mixte.",
+    categorie_slug: 'tourisme',
+    prix_propose: 165000, prix_vente: 195000, stock: 40, unite: 'paire',
+  },
+  {
+    nom: 'Telescope d\'observation longue distance',
+    description: "Longue-vue 20-60x60 avec trepied compact, ideale pour observation de la faune et des baleines depuis le rivage.",
+    categorie_slug: 'tourisme',
+    prix_propose: 385000, prix_vente: 445000, stock: 12, unite: 'unite',
+  },
+  {
+    nom: 'Bache de sol tente familiale renforcee',
+    description: "Bache de sol renforcee compatible grandes tentes familiales, protection contre l'humidite et les perforations.",
+    categorie_slug: 'tourisme',
+    prix_propose: 52000, prix_vente: 62000, stock: 38, unite: 'unite',
+  },
+  {
+    nom: 'Kit de signalisation et fanions de balisage circuit',
+    description: "Kit de 50 fanions reflectorisants et piquets de balisage, pour marquage temporaire de circuits de randonnee ou d'evenements touristiques.",
+    categorie_slug: 'tourisme',
+    prix_propose: 88000, prix_vente: 102000, stock: 25, unite: 'kit',
+  },
 ];
 
 /**
