@@ -15,6 +15,7 @@ const CATEGORIES = [
   { nom: 'Irrigation', nom_en: 'Irrigation', nom_mg: 'Fanondrahana', slug: 'irrigation', icone: 'droplet' },
   { nom: 'Materiel medical', nom_en: 'Medical Equipment', nom_mg: 'Fitaovam-pahasalamana', slug: 'materiel-medical', icone: 'stethoscope' },
   { nom: 'Outillage', nom_en: 'Tools', nom_mg: 'Fitaovana', slug: 'outillage', icone: 'wrench' },
+  { nom: 'Equipements touristiques', nom_en: 'Tourism Equipment', nom_mg: 'Fitaovana fizahan-tany', slug: 'tourisme', icone: 'compass' },
   { nom: 'Autres', nom_en: 'Others', nom_mg: 'Hafa', slug: 'autres', icone: 'package' },
 ];
 
@@ -83,6 +84,102 @@ const DEMO_PRODUCTS = [
   },
 ];
 
+// Catalogue de demonstration : equipements et materiels pour le tourisme
+// (location de vehicules, camping, activites nautiques, guides et signaletique de circuits).
+const DEMO_PRODUCTS_TOURISME = [
+  {
+    nom: '4x4 Toyota Land Cruiser tout-terrain',
+    description: "Vehicule 4x4 robuste pour circuits touristiques et pistes difficiles, 7 places, double reservoir, treuil avant et galerie de toit incluse.",
+    categorie_slug: 'tourisme',
+    prix_propose: 95000000, prix_vente: 108000000, stock: 3, unite: 'unite',
+  },
+  {
+    nom: 'Tente de camping 4 places impermeable',
+    description: "Tente familiale 4 places, double toit impermeable, montage rapide sans outils, ideale pour les circuits dans les parcs nationaux.",
+    categorie_slug: 'tourisme',
+    prix_propose: 185000, prix_vente: 215000, stock: 25, unite: 'unite',
+  },
+  {
+    nom: 'Kayak de mer 2 places polyethylene',
+    description: "Kayak biplace en polyethylene haute densite, insubmersible, ideal pour la decouverte des canaux et lagons cotiers.",
+    categorie_slug: 'tourisme',
+    prix_propose: 1450000, prix_vente: 1650000, stock: 10, unite: 'unite',
+  },
+  {
+    nom: 'Kit complet equipement de guide touristique',
+    description: "Kit pour guide professionnel : sac a dos technique 40L, jumelles, talkie-walkie, trousse de premiers secours et lampe frontale.",
+    categorie_slug: 'tourisme',
+    prix_propose: 320000, prix_vente: 365000, stock: 18, unite: 'kit',
+  },
+  {
+    nom: 'Panneau de signaletique de circuit touristique',
+    description: "Panneau directionnel en aluminium trait, resistant aux intemperies, personnalisable avec pictogrammes et distances, pour balisage de circuits.",
+    categorie_slug: 'tourisme',
+    prix_propose: 145000, prix_vente: 168000, stock: 50, unite: 'unite',
+  },
+  {
+    nom: 'Quad 4x4 250cc tout-terrain',
+    description: "Quad utilitaire et loisir 250cc, transmission automatique, ideal pour excursions sur pistes sablonneuses et reliefs accidentes.",
+    categorie_slug: 'tourisme',
+    prix_propose: 12500000, prix_vente: 14200000, stock: 5, unite: 'unite',
+  },
+  {
+    nom: 'Sac a dos de trek 65L avec housse de pluie',
+    description: "Sac a dos de randonnee 65 litres, armature ajustable, housse de pluie integree, multiples points d'attache pour materiel exterieur.",
+    categorie_slug: 'tourisme',
+    prix_propose: 175000, prix_vente: 205000, stock: 35, unite: 'unite',
+  },
+  {
+    nom: 'Pirogue traditionnelle a balancier motorisee',
+    description: "Pirogue a balancier de style traditionnel malgache, motorisation hors-bord 15CV, capacite 6 passagers, ideale pour excursions cotieres.",
+    categorie_slug: 'tourisme',
+    prix_propose: 8500000, prix_vente: 9700000, stock: 4, unite: 'unite',
+  },
+  {
+    nom: 'Jumelles longue portee 10x42 etanches',
+    description: "Jumelles professionnelles 10x42, traitement etanche et antibuee, ideales pour observation de la faune lors de circuits ecotouristiques.",
+    categorie_slug: 'tourisme',
+    prix_propose: 240000, prix_vente: 280000, stock: 22, unite: 'unite',
+  },
+  {
+    nom: 'Gilet de sauvetage homologue adulte',
+    description: "Gilet de sauvetage homologue, flottabilite 100N, reglable, pour activites nautiques encadrees et location aux touristes.",
+    categorie_slug: 'tourisme',
+    prix_propose: 68000, prix_vente: 79000, stock: 60, unite: 'unite',
+  },
+];
+
+/**
+ * Insere un catalogue de produits de demonstration pour un fournisseur donne,
+ * deja valides et publies en vente. N'agit que si ce fournisseur n'a encore
+ * aucun produit, pour rester idempotent entre plusieurs executions du seed.
+ */
+async function insererCatalogueDemo(client, supplierId, adminId, produits, libelle) {
+  const existingProducts = await client.query('SELECT COUNT(*) FROM products WHERE supplier_id = $1', [supplierId]);
+  if (parseInt(existingProducts.rows[0].count, 10) > 0) {
+    console.log(`[SEED] Le catalogue de demonstration (${libelle}) existe deja, aucune action.`);
+    return;
+  }
+
+  console.log(`[SEED] Insertion du catalogue de demonstration (${libelle})...`);
+  for (const p of produits) {
+    const categoryResult = await client.query('SELECT id FROM categories WHERE slug = $1', [p.categorie_slug]);
+    const categoryId = categoryResult.rows[0]?.id || null;
+    const barcode = generateBarcode();
+
+    const productResult = await client.query(
+      `INSERT INTO products (supplier_id, category_id, validated_by, nom, description, prix_propose, prix_vente,
+                              devise, stock_theorique, unite, code_barre, statut, est_populaire)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, 'MGA', $8, $9, $10, 'en_vente', true)
+       RETURNING id`,
+      [supplierId, categoryId, adminId, p.nom, p.description, p.prix_propose, p.prix_vente, p.stock, p.unite, barcode]
+    );
+    const { dataUrl } = await generateProductQrCode(productResult.rows[0].id);
+    await client.query('UPDATE products SET qr_code_data = $1 WHERE id = $2', [dataUrl, productResult.rows[0].id]);
+  }
+  console.log(`[SEED] ${produits.length} produits (${libelle}) inseres et publies.`);
+}
+
 async function seed() {
   const client = await pool.connect();
   try {
@@ -144,29 +241,35 @@ async function seed() {
       console.log('[SEED] Le fournisseur de demonstration existe deja, aucune action.');
     }
 
-    // Catalogue de demonstration : produits d'equipements ruraux, deja valides et en vente
-    const existingProducts = await client.query('SELECT COUNT(*) FROM products WHERE supplier_id = $1', [supplierId]);
-    if (parseInt(existingProducts.rows[0].count, 10) === 0) {
-      console.log('[SEED] Insertion du catalogue de demonstration (equipements ruraux)...');
-      for (const p of DEMO_PRODUCTS) {
-        const categoryResult = await client.query('SELECT id FROM categories WHERE slug = $1', [p.categorie_slug]);
-        const categoryId = categoryResult.rows[0]?.id || null;
-        const barcode = generateBarcode();
-
-        const productResult = await client.query(
-          `INSERT INTO products (supplier_id, category_id, validated_by, nom, description, prix_propose, prix_vente,
-                                  devise, stock_theorique, unite, code_barre, statut, est_populaire)
-           VALUES ($1, $2, $3, $4, $5, $6, $7, 'MGA', $8, $9, $10, 'en_vente', true)
-           RETURNING id`,
-          [supplierId, categoryId, adminId, p.nom, p.description, p.prix_propose, p.prix_vente, p.stock, p.unite, barcode]
-        );
-        const { dataUrl } = await generateProductQrCode(productResult.rows[0].id);
-        await client.query('UPDATE products SET qr_code_data = $1 WHERE id = $2', [dataUrl, productResult.rows[0].id]);
-      }
-      console.log(`[SEED] ${DEMO_PRODUCTS.length} produits d'equipements ruraux inseres et publies.`);
+    // Fournisseur de demonstration specialise dans le materiel touristique
+    const demoTourismeSupplierEmail = 'mada.tourisme@fitahiantsoa.mg';
+    let tourismeSupplierId;
+    const existingTourismeSupplier = await client.query('SELECT id FROM users WHERE email = $1', [demoTourismeSupplierEmail]);
+    if (existingTourismeSupplier.rowCount === 0) {
+      console.log('[SEED] Creation du fournisseur de demonstration Mada Tourisme & Aventure...');
+      const hash = await bcrypt.hash('Fournisseur123!', 12);
+      const result = await client.query(
+        `INSERT INTO users (role, email, password_hash, nom, prenom, cin, ville, est_actif, est_verifie)
+         VALUES ('fournisseur', $1, $2, 'Tourisme', 'Mada', '202020200002', 'Antananarivo', true, true)
+         RETURNING id`,
+        [demoTourismeSupplierEmail, hash]
+      );
+      tourismeSupplierId = result.rows[0].id;
+      await client.query(
+        `INSERT INTO supplier_profiles (user_id, nom_entreprise, secteur_activite, description, commission_taux)
+         VALUES ($1, 'Mada Tourisme & Aventure', 'tourisme', 'Distributeur de materiel et vehicules pour le tourisme et l''ecotourisme a Madagascar.', 15)`,
+        [tourismeSupplierId]
+      );
     } else {
-      console.log('[SEED] Le catalogue de demonstration existe deja, aucune action.');
+      tourismeSupplierId = existingTourismeSupplier.rows[0].id;
+      console.log('[SEED] Le fournisseur de demonstration tourisme existe deja, aucune action.');
     }
+
+    // Catalogue de demonstration : produits d'equipements ruraux, deja valides et en vente
+    await insererCatalogueDemo(client, supplierId, adminId, DEMO_PRODUCTS, 'equipements ruraux');
+
+    // Catalogue de demonstration : produits touristiques, deja valides et en vente
+    await insererCatalogueDemo(client, tourismeSupplierId, adminId, DEMO_PRODUCTS_TOURISME, 'tourisme');
 
     await client.query('COMMIT');
     console.log('[SEED] Termine avec succes.');

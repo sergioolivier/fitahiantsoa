@@ -20,6 +20,7 @@ export default function Footer() {
           <Link to="/catalogue?category=equipements-ruraux">{t('categories.equipements-ruraux')}</Link>
           <Link to="/catalogue?category=irrigation">{t('categories.irrigation')}</Link>
           <Link to="/catalogue?category=outillage">{t('categories.outillage')}</Link>
+          <Link to="/catalogue?category=tourisme">{t('categories.tourisme')}</Link>
           <Link to="/promotions">{t('common.promotions')}</Link>
         </div>
         <div className="site-footer__col">

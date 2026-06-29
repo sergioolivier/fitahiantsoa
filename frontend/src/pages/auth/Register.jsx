@@ -116,6 +116,7 @@ export default function Register() {
                   <option value="irrigation">{t('categories.irrigation')}</option>
                   <option value="outillage">{t('categories.outillage')}</option>
                   <option value="materiel_medical">{t('categories.materiel-medical')}</option>
+                  <option value="tourisme">{t('categories.tourisme')}</option>
                   <option value="autre">{t('categories.autres')}</option>
                 </select>
               </div>

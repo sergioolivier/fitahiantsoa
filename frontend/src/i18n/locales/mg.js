@@ -74,6 +74,7 @@ export default {
     irrigation: 'Fanondrahana',
     'materiel-medical': 'Fitaovam-pahasalamana',
     outillage: 'Fitaovana',
+    tourisme: 'Fitaovana fizahan-tany',
     autres: 'Hafa',
   },
   footer: {

@@ -74,6 +74,7 @@ export default {
     irrigation: '灌漑設備',
     'materiel-medical': '医療機器',
     outillage: '工具',
+    tourisme: '観光用品',
     autres: 'その他',
   },
   footer: {

@@ -7,6 +7,7 @@ const CATEGORY_GRADIENT = {
   irrigation: 'linear-gradient(135deg, #6B8C6B 0%, #4A6B7C 100%)',
   outillage: 'linear-gradient(135deg, #E2A088 0%, #C1502E 100%)',
   'materiel-medical': 'linear-gradient(135deg, #4A6B7C 0%, #283D28 100%)',
+  tourisme: 'linear-gradient(135deg, #E8C77E 0%, #3D5A3D 100%)',
   autres: 'linear-gradient(135deg, #E0D6BD 0%, #6B8C6B 100%)',
 };
 

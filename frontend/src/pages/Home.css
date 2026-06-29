@@ -356,6 +356,10 @@
   background: linear-gradient(135deg, #D7E3E8 0%, #9FC0CC 100%);
   color: var(--color-info);
 }
+.home-category-card--tourisme .home-category-card__icon {
+  background: linear-gradient(135deg, #E8C77E 0%, var(--color-riziere-light) 100%);
+  color: var(--color-riziere-dark);
+}
 .home-category-card--autres .home-category-card__icon {
   background: linear-gradient(135deg, var(--color-ligne) 0%, var(--color-riziere-light) 100%);
   color: var(--color-encre-soft);

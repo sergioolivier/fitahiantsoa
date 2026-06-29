@@ -74,6 +74,7 @@ export default {
     irrigation: 'Bewässerung',
     'materiel-medical': 'Medizinische Geräte',
     outillage: 'Werkzeuge',
+    tourisme: 'Tourismusausrüstung',
     autres: 'Sonstiges',
   },
   footer: {

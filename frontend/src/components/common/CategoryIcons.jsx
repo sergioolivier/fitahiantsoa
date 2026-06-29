@@ -57,10 +57,23 @@ const BOITE_GENERIQUE = (
   </svg>
 );
 
+const BOUSSOLE_TOURISME = (
+  <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+    {/* Boussole stylisee : exploration et circuits touristiques */}
+    <circle cx="32" cy="32" r="22" stroke="currentColor" strokeWidth="4" />
+    <path d="M32 14V19" stroke="currentColor" strokeWidth="3" strokeLinecap="round" opacity="0.6" />
+    <path d="M32 45V50" stroke="currentColor" strokeWidth="3" strokeLinecap="round" opacity="0.6" />
+    <path d="M14 32H19" stroke="currentColor" strokeWidth="3" strokeLinecap="round" opacity="0.6" />
+    <path d="M45 32H50" stroke="currentColor" strokeWidth="3" strokeLinecap="round" opacity="0.6" />
+    <path d="M40 24L34 34L24 40L30 30L40 24Z" stroke="currentColor" strokeWidth="3" strokeLinejoin="round" fill="currentColor" fillOpacity="0.12" />
+  </svg>
+);
+
 export const CATEGORY_ICON_SVG = {
   'equipements-ruraux': MOTOCULTEUR,
   irrigation: GOUTTE_IRRIGATION,
   outillage: CLE_OUTILLAGE,
   'materiel-medical': STETHOSCOPE,
+  tourisme: BOUSSOLE_TOURISME,
   autres: BOITE_GENERIQUE,
 };
