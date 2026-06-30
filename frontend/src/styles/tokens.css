@@ -1,33 +1,39 @@
 /* ============================================================
    FITAHIANTSOA - Design tokens
-   Palette inspiree de la terre malgache (riziere, terre cuite,
-   tissage lamba) plutot que des defauts generiques IA.
+   Palette marketplace : base neutre gris-blanc proche des
+   standards internationaux (densite, lisibilite), accent corail
+   pour l'action d'achat, vert riziere conserve comme signal de
+   confiance/validation - identite malgache sans hero illustratif.
    ============================================================ */
 
 :root {
   /* Couleurs primaires */
-  --color-terre: #C1502E;        /* terre cuite, accent chaud principal */
-  --color-terre-dark: #9C3E22;
-  --color-terre-light: #E2A088;
-  --color-riziere: #3D5A3D;      /* vert riziere, identite visuelle */
-  --color-riziere-dark: #283D28;
-  --color-riziere-light: #6B8C6B;
-  --color-ocre: #E8C77E;          /* sable / soleil */
-  --color-ocre-dark: #C9A352;
+  --color-terre: #D6483F;        /* corail signal d'achat, remplace la terre cuite */
+  --color-terre-dark: #B83832;
+  --color-terre-light: #F0A8A2;
+  --color-riziere: #1C7A4D;      /* vert confiance/validation, plus satures */
+  --color-riziere-dark: #115C39;
+  --color-riziere-light: #5FAE82;
+  --color-ocre: #E0A526;          /* accent prix/promo */
+  --color-ocre-dark: #B8841A;
 
   /* Neutres */
-  --color-riz: #FBF6EC;           /* fond principal, blanc casse "riz" */
-  --color-riz-deep: #F2EBDA;
-  --color-encre: #221F18;         /* texte principal, presque noir chaud */
-  --color-encre-soft: #4A4538;
-  --color-ligne: #E0D6BD;         /* bordures discretes */
+  --color-riz: #F6F7F9;           /* fond principal, gris-blanc froid */
+  --color-riz-deep: #EEF0F3;
+  --color-encre: #15171E;         /* texte principal, quasi-noir bleute */
+  --color-encre-soft: #5B5F6B;
+  --color-ligne: #E2E4E9;         /* bordures discretes */
   --color-blanc: #FFFFFF;
 
   /* Etats */
-  --color-succes: #3D5A3D;
-  --color-attention: #C9A352;
-  --color-erreur: #B33A2E;
-  --color-info: #4A6B7C;
+  --color-succes: #1C7A4D;
+  --color-attention: #B8841A;
+  --color-erreur: #C0352D;
+  --color-info: #2C6E8E;
+
+  /* Couches marketplace (header, surfaces sombres) */
+  --mk-ink: #15171E;
+  --mk-ink-soft: #20232C;
 
   /* Typographie */
   --font-display: 'Fraunces', 'Georgia', serif;
@@ -56,17 +62,17 @@
   --space-12: 6rem;
 
   /* Rayons et ombres */
-  --radius-sm: 6px;
-  --radius-md: 10px;
-  --radius-lg: 16px;
-  --shadow-sm: 0 1px 2px rgba(34, 31, 24, 0.06);
-  --shadow-md: 0 4px 16px rgba(34, 31, 24, 0.08);
-  --shadow-lg: 0 12px 32px rgba(34, 31, 24, 0.12);
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 10px;
+  --shadow-sm: 0 1px 2px rgba(21, 23, 30, 0.06);
+  --shadow-md: 0 2px 8px rgba(21, 23, 30, 0.08);
+  --shadow-lg: 0 8px 24px rgba(21, 23, 30, 0.12);
 
   /* Layout */
   --sidebar-width: 260px;
-  --header-height: 68px;
-  --max-width: 1280px;
+  --header-height: 112px;
+  --max-width: 1320px;
 }
 
 * {

@@ -6,7 +6,6 @@ import { categoryService } from '../services/category.service';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import ProductCard from '../components/common/ProductCard';
-import LanguageSwitcher from '../components/common/LanguageSwitcher';
 import { CATEGORY_ICON_SVG } from '../components/common/CategoryIcons';
 import { useScrollReveal } from '../utils/useScrollReveal';
 import './Home.css';
@@ -49,52 +48,59 @@ export default function Home() {
       <section className="home-hero">
         <div className="container home-hero__inner">
           <div className="home-hero__text">
+            <span className="home-hero__kicker">{t('home.heroKicker')}</span>
             <h1>{t('home.heroTitle')}</h1>
             <p>{t('home.heroSubtitle')}</p>
             <div className="home-hero__actions">
               <Link to="/catalogue" className="btn btn--primary btn--lg">{t('home.exploreCatalogue')}</Link>
-              <Link to="/inscription?role=fournisseur" className="btn btn--outline btn--lg">{t('home.becomeSupplier')}</Link>
-            </div>
-            <div className="home-hero__trust">
-              <div className="home-hero__trust-item">
-                <strong>100%</strong><span>{t('home.trustVerified')}</span>
-              </div>
-              <div className="home-hero__trust-item home-hero__trust-item--lang">
-                <span className="home-hero__trust-label">{t('home.trustLanguage')}</span>
-                <LanguageSwitcher />
-              </div>
+              <Link to="/inscription?role=fournisseur" className="btn btn--outline-light btn--lg">{t('home.becomeSupplier')}</Link>
             </div>
           </div>
+          <div className="home-hero__stats" aria-hidden="true">
+            <div className="home-hero__stat">
+              <strong>5</strong>
+              <span>{t('home.statCategories')}</span>
+            </div>
+            <div className="home-hero__stat">
+              <strong>100%</strong>
+              <span>{t('home.trustVerified')}</span>
+            </div>
+            <div className="home-hero__stat">
+              <strong>6</strong>
+              <span>{t('home.statLanguages')}</span>
+            </div>
+          </div>
+        </div>
+      </section>
 
-          <div className="home-hero__visual" aria-hidden="true">
-            <div className="hero-card hero-card--main">
-              <div className="hero-card__media hero-card__media--equipment-main">
-                <span className="hero-card__media-icon">{CATEGORY_ICON_SVG['equipements-ruraux']}</span>
-              </div>
-              <div className="hero-card__body">
-                <span className="hero-card__category">{t('home.heroCategoryRural')}</span>
-                <strong>{t('home.heroProduct1')}</strong>
-                <div className="hero-card__meta">
-                  <span className="hero-card__price">2 450 000 Ar</span>
-                  <span className="hero-card__rating">★ 4.8</span>
-                </div>
-              </div>
+      <section className="home-reassurance">
+        <div className="container home-reassurance__inner">
+          <div className="home-reassurance__item">
+            <span className="home-reassurance__icon">🚚</span>
+            <div>
+              <strong>{t('home.reassuranceDeliveryTitle')}</strong>
+              <span>{t('home.reassuranceDeliveryText')}</span>
             </div>
-            <div className="hero-card hero-card--secondary">
-              <div className="hero-card__media hero-card__media--equipment-secondary">
-                <span className="hero-card__media-icon">{CATEGORY_ICON_SVG.autres}</span>
-              </div>
-              <div className="hero-card__body">
-                <span className="hero-card__category">{t('home.heroCategoryRural')}</span>
-                <strong>{t('home.heroProduct2')}</strong>
-              </div>
+          </div>
+          <div className="home-reassurance__item">
+            <span className="home-reassurance__icon">🛡️</span>
+            <div>
+              <strong>{t('home.reassurancePaymentTitle')}</strong>
+              <span>{t('home.reassurancePaymentText')}</span>
             </div>
-            <div className="hero-badge">
-              <span className="hero-badge__icon">✓</span>
-              <div>
-                <strong>{t('home.orderConfirmed')}</strong>
-                <span>{t('home.deliveryInProgress')}</span>
-              </div>
+          </div>
+          <div className="home-reassurance__item">
+            <span className="home-reassurance__icon">✓</span>
+            <div>
+              <strong>{t('home.reassuranceVerifiedTitle')}</strong>
+              <span>{t('home.reassuranceVerifiedText')}</span>
+            </div>
+          </div>
+          <div className="home-reassurance__item">
+            <span className="home-reassurance__icon">💬</span>
+            <div>
+              <strong>{t('home.reassuranceSupportTitle')}</strong>
+              <span>{t('home.reassuranceSupportText')}</span>
             </div>
           </div>
         </div>

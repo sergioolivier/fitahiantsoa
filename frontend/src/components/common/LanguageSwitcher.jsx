@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { AVAILABLE_LANGUAGES } from '../../i18n';
 import './LanguageSwitcher.css';
 
-export default function LanguageSwitcher({ compact = false }) {
+export default function LanguageSwitcher({ compact = false, onDark = false }) {
   const { i18n, t } = useTranslation();
   const [open, setOpen] = useState(false);
   const containerRef = useRef(null);
@@ -26,7 +26,7 @@ export default function LanguageSwitcher({ compact = false }) {
   }
 
   return (
-    <div className={`lang-switcher ${compact ? 'lang-switcher--compact' : ''}`} ref={containerRef}>
+    <div className={`lang-switcher ${compact ? 'lang-switcher--compact' : ''} ${onDark ? 'lang-switcher--on-dark' : ''}`} ref={containerRef}>
       <button className="lang-switcher__trigger" onClick={() => setOpen((o) => !o)} aria-haspopup="listbox" aria-expanded={open}>
         <span className="lang-switcher__flag">{current.flag}</span>
         {!compact && <span className="lang-switcher__label">{t(`languages.${current.code}`)}</span>}

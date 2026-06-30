@@ -11,11 +11,24 @@
   top: calc(var(--header-height) + var(--space-4));
 }
 
+.catalogue__price-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.catalogue__price-sep {
+  color: var(--color-encre-soft);
+  flex-shrink: 0;
+}
+
 .catalogue__results-header {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
   margin-bottom: var(--space-6);
+  padding-bottom: var(--space-4);
+  border-bottom: 1px solid var(--color-ligne);
 }
 
 .catalogue__results-header h1 {
@@ -25,6 +38,7 @@
 .catalogue__results-header span {
   color: var(--color-encre-soft);
   font-size: var(--text-sm);
+  font-weight: 600;
 }
 
 .catalogue__pagination {

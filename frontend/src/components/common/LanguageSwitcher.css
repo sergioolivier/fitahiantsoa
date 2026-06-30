@@ -75,3 +75,17 @@
   color: var(--color-blanc);
   font-weight: 700;
 }
+
+.lang-switcher--on-dark .lang-switcher__trigger {
+  border-color: rgba(255, 255, 255, 0.25);
+  color: var(--color-blanc);
+}
+
+.lang-switcher--on-dark .lang-switcher__trigger:hover {
+  border-color: rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.lang-switcher--on-dark .lang-switcher__chevron {
+  color: rgba(255, 255, 255, 0.7);
+}

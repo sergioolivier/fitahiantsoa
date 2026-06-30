@@ -79,13 +79,12 @@ export default function Catalogue() {
         </div>
 
         <div className="form-group">
-          <label className="form-label">{t('catalogue.minPrice')}</label>
-          <input type="number" className="form-input" value={prixMin} onChange={(e) => updateParam('prix_min', e.target.value)} placeholder="0" />
-        </div>
-
-        <div className="form-group">
-          <label className="form-label">{t('catalogue.maxPrice')}</label>
-          <input type="number" className="form-input" value={prixMax} onChange={(e) => updateParam('prix_max', e.target.value)} placeholder={t('catalogue.noLimit')} />
+          <label className="form-label">{t('catalogue.priceRange')}</label>
+          <div className="catalogue__price-row">
+            <input type="number" className="form-input" value={prixMin} onChange={(e) => updateParam('prix_min', e.target.value)} placeholder={t('catalogue.minPrice')} />
+            <span className="catalogue__price-sep">—</span>
+            <input type="number" className="form-input" value={prixMax} onChange={(e) => updateParam('prix_max', e.target.value)} placeholder={t('catalogue.noLimit')} />
+          </div>
         </div>
 
         <div className="form-group">

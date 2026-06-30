@@ -6,9 +6,13 @@
  * Usage : npm run db:seed
  */
 const bcrypt = require('bcryptjs');
+const fs = require('fs');
+const path = require('path');
 const { pool } = require('./pool');
 const { generateBarcode, generateProductQrCode } = require('../utils/codes.utils');
 require('dotenv').config();
+
+const UPLOADS_DIR = path.join(__dirname, '..', '..', process.env.UPLOAD_DIR || 'uploads');
 
 const CATEGORIES = [
   { nom: 'Equipements ruraux', nom_en: 'Rural Equipment', nom_mg: 'Fitaovana ho an\'ny ambanivohitra', slug: 'equipements-ruraux', icone: 'tractor' },
@@ -92,60 +96,70 @@ const DEMO_PRODUCTS_TOURISME = [
     description: "Vehicule 4x4 robuste pour circuits touristiques et pistes difficiles, 7 places, double reservoir, treuil avant et galerie de toit incluse.",
     categorie_slug: 'tourisme',
     prix_propose: 95000000, prix_vente: 108000000, stock: 3, unite: 'unite',
+    image: '4x4-toyota-land-cruiser-tout-terrain.png',
   },
   {
     nom: 'Tente de camping 4 places impermeable',
     description: "Tente familiale 4 places, double toit impermeable, montage rapide sans outils, ideale pour les circuits dans les parcs nationaux.",
     categorie_slug: 'tourisme',
     prix_propose: 185000, prix_vente: 215000, stock: 25, unite: 'unite',
+    image: 'tente-camping-4-places-impermeable.png',
   },
   {
     nom: 'Kayak de mer 2 places polyethylene',
     description: "Kayak biplace en polyethylene haute densite, insubmersible, ideal pour la decouverte des canaux et lagons cotiers.",
     categorie_slug: 'tourisme',
     prix_propose: 1450000, prix_vente: 1650000, stock: 10, unite: 'unite',
+    image: 'kayak-mer-2-places-polyethylene.png',
   },
   {
     nom: 'Kit complet equipement de guide touristique',
     description: "Kit pour guide professionnel : sac a dos technique 40L, jumelles, talkie-walkie, trousse de premiers secours et lampe frontale.",
     categorie_slug: 'tourisme',
     prix_propose: 320000, prix_vente: 365000, stock: 18, unite: 'kit',
+    image: 'kit-equipement-guide-touristique.png',
   },
   {
     nom: 'Panneau de signaletique de circuit touristique',
     description: "Panneau directionnel en aluminium trait, resistant aux intemperies, personnalisable avec pictogrammes et distances, pour balisage de circuits.",
     categorie_slug: 'tourisme',
     prix_propose: 145000, prix_vente: 168000, stock: 50, unite: 'unite',
+    image: 'panneau-signaletique-circuit-touristique.png',
   },
   {
     nom: 'Quad 4x4 250cc tout-terrain',
     description: "Quad utilitaire et loisir 250cc, transmission automatique, ideal pour excursions sur pistes sablonneuses et reliefs accidentes.",
     categorie_slug: 'tourisme',
     prix_propose: 12500000, prix_vente: 14200000, stock: 5, unite: 'unite',
+    image: 'quad-4x4-250cc-tout-terrain.png',
   },
   {
     nom: 'Sac a dos de trek 65L avec housse de pluie',
     description: "Sac a dos de randonnee 65 litres, armature ajustable, housse de pluie integree, multiples points d'attache pour materiel exterieur.",
     categorie_slug: 'tourisme',
     prix_propose: 175000, prix_vente: 205000, stock: 35, unite: 'unite',
+    image: 'sac-trek-65l-housse-pluie.png',
   },
   {
     nom: 'Pirogue traditionnelle a balancier motorisee',
     description: "Pirogue a balancier de style traditionnel malgache, motorisation hors-bord 15CV, capacite 6 passagers, ideale pour excursions cotieres.",
     categorie_slug: 'tourisme',
     prix_propose: 8500000, prix_vente: 9700000, stock: 4, unite: 'unite',
+    image: 'pirogue-traditionnelle-balancier-motorisee.png',
   },
   {
     nom: 'Jumelles longue portee 10x42 etanches',
     description: "Jumelles professionnelles 10x42, traitement etanche et antibuee, ideales pour observation de la faune lors de circuits ecotouristiques.",
     categorie_slug: 'tourisme',
     prix_propose: 240000, prix_vente: 280000, stock: 22, unite: 'unite',
+    image: 'jumelles-10x42-etanches.png',
   },
   {
     nom: 'Gilet de sauvetage homologue adulte',
     description: "Gilet de sauvetage homologue, flottabilite 100N, reglable, pour activites nautiques encadrees et location aux touristes.",
     categorie_slug: 'tourisme',
     prix_propose: 68000, prix_vente: 79000, stock: 60, unite: 'unite',
+    image: 'gilet-sauvetage-homologue-adulte.png',
   },
   {
     nom: 'Moto tout-terrain 200cc pour guides',
@@ -266,6 +280,18 @@ async function insererCatalogueDemo(client, supplierId, adminId, produits, libel
     );
     const { dataUrl } = await generateProductQrCode(productResult.rows[0].id);
     await client.query('UPDATE products SET qr_code_data = $1 WHERE id = $2', [dataUrl, productResult.rows[0].id]);
+
+    if (p.image) {
+      const imagePath = path.join(UPLOADS_DIR, p.image);
+      if (fs.existsSync(imagePath)) {
+        await client.query(
+          `INSERT INTO product_media (product_id, type, url, ordre_affichage) VALUES ($1, 'image', $2, 0)`,
+          [productResult.rows[0].id, `/uploads/${p.image}`]
+        );
+      } else {
+        console.warn(`[SEED] Image "${p.image}" introuvable dans ${UPLOADS_DIR}, produit "${p.nom}" insere sans photo.`);
+      }
+    }
   }
   console.log(`[SEED] ${produits.length} produits (${libelle}) inseres et publies.`);
 }
