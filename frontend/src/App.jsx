@@ -58,7 +58,7 @@ export default function App() {
       <AuthProvider>
         <CartProvider>
           <Routes>
-            {/* ============ Zone publique ============ */}
+            {/* Zone publique */}
             <Route element={<PublicLayout />}>
               <Route path="/" element={<Home />} />
               <Route path="/catalogue" element={<Catalogue />} />
@@ -68,7 +68,7 @@ export default function App() {
               <Route path="/inscription" element={<Register />} />
             </Route>
 
-            {/* ============ Espace client ============ */}
+            {/* Espace client */}
             <Route element={<ProtectedRoute roles={['client']}><DashboardLayout /></ProtectedRoute>}>
               <Route path="/client/tableau-de-bord" element={<ClientDashboard />} />
               <Route path="/client/panier" element={<Cart />} />
@@ -80,7 +80,7 @@ export default function App() {
               <Route path="/client/parametres" element={<ClientSettings />} />
             </Route>
 
-            {/* ============ Espace fournisseur ============ */}
+            {/* Espace fournisseur */}
             <Route element={<ProtectedRoute roles={['fournisseur']}><DashboardLayout /></ProtectedRoute>}>
               <Route path="/fournisseur/tableau-de-bord" element={<SupplierDashboard />} />
               <Route path="/fournisseur/produits" element={<SupplierProducts />} />
@@ -91,7 +91,7 @@ export default function App() {
               <Route path="/fournisseur/parametres" element={<SupplierSettings />} />
             </Route>
 
-            {/* ============ Espace employe ============ */}
+            {/* Espace employe */}
             <Route element={<ProtectedRoute roles={['employe', 'admin']}><DashboardLayout /></ProtectedRoute>}>
               <Route path="/employe/tableau-de-bord" element={<EmployeeDashboard />} />
               <Route path="/employe/validation-produits" element={<ProductValidation />} />
@@ -101,7 +101,7 @@ export default function App() {
               <Route path="/employe/messages" element={<MessagesPage />} />
             </Route>
 
-            {/* ============ Espace administrateur ============ */}
+            {/* Espace administrateur */}
             <Route element={<ProtectedRoute roles={['admin']}><DashboardLayout /></ProtectedRoute>}>
               <Route path="/admin/tableau-de-bord" element={<AdminDashboard />} />
               <Route path="/admin/utilisateurs" element={<UserManagement />} />
@@ -112,7 +112,7 @@ export default function App() {
               <Route path="/admin/parametres" element={<AdminSettings />} />
             </Route>
 
-            {/* ============ Espace partenaire logistique ============ */}
+            {/* Espace partenaire logistique */}
             <Route element={<ProtectedRoute roles={['partenaire_logistique']}><DashboardLayout /></ProtectedRoute>}>
               <Route path="/logistique/tableau-de-bord" element={<LogisticsDashboard />} />
               <Route path="/logistique/disponibles" element={<AvailableDeliveries />} />
@@ -120,7 +120,7 @@ export default function App() {
               <Route path="/logistique/historique" element={<DeliveryHistory />} />
             </Route>
 
-            {/* ============ 404 ============ */}
+            {/* 404 */}
             <Route path="*" element={<PublicLayout />}>
               <Route path="*" element={<div className="container" style={{ padding: 'var(--space-12)' }}><h1>Page introuvable</h1></div>} />
             </Route>

@@ -26,9 +26,7 @@ const supplierRoutes = require('./routes/supplier.routes');
 
 const app = express();
 
-// ============================================================
 // Securite et middlewares globaux
-// ============================================================
 app.use(helmet());
 app.use(cors({
   origin: process.env.FRONTEND_URL || 'http://localhost:5173',
@@ -61,9 +59,7 @@ app.use('/api/auth/register', authLimiter);
 // Fichiers uploades (images/videos produits) servis statiquement
 app.use('/uploads', express.static(path.join(__dirname, '..', process.env.UPLOAD_DIR || 'uploads')));
 
-// ============================================================
 // Routes API
-// ============================================================
 app.get('/api/health', (req, res) => {
   res.json({ success: true, message: 'API FITAHIANTSOA operationnelle.', timestamp: new Date().toISOString() });
 });
@@ -81,9 +77,7 @@ app.use('/api/promotions', promotionRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/suppliers', supplierRoutes);
 
-// ============================================================
 // Gestion des erreurs (toujours en dernier)
-// ============================================================
 app.use(notFoundHandler);
 app.use(errorHandler);
 
